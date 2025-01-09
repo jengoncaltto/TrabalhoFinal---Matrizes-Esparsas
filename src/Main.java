@@ -1,6 +1,16 @@
 public class Main {
     public static void main(String[] args) {
-        MatrizLista matriz1 = new MatrizLista();
+        // roda 10 vezes
+        long to = System.currentTimeMillis();
+        for(int i = 0; i < 10; i++){
+            //...
+        long t1 = System.currentTimeMillis();
+        }
 
+        //long tempoTomado = (t1 - t0) / 10;
+
+        MatrizEstatica estatica = new MatrizEstatica(5);
+        estatica.gerarMatrizEsparsa(5);
+        estatica.exibirMatriz();
     }
 }
