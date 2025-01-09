@@ -39,4 +39,22 @@ public class MatrizEstatica {
             }
         }
     }
+    
+    public boolean verificaEsparsidade(){
+        double calcula = (N*N) * 0.6;
+        double resultado = 0;
+        for (int i = 0; i < N; i++){
+            for (int j = 0; i < N; j++){
+                if(this.matriz[i][j] != 0){
+                    resultado++;
+                }
+            }
+        }
+        if(resultado == calcula){
+            return true;
+        }
+        return false;
+    }
+
+    
 }
