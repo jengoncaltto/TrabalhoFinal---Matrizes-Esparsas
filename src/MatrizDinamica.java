@@ -1,9 +1,5 @@
-import java.util.Vector;
-
-public class MatrizLista {
+public class MatrizLista extends matriz{
     private EloMatriz[] m; // Array de listas encadeadas (uma para cada linha)
-    private int numLinhas;
-    private int numColunas;
 
     // Classe para representar os elementos na matriz
     private class EloMatriz {
@@ -14,5 +10,9 @@ public class MatrizLista {
             this.coluna = coluna;
             this.valor = valor;
         }
+    }
+
+    public MatrizLista(int largura, int altura){
+        super(largura, altura);
     }
 }
