@@ -3,12 +3,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class matriz {
+public class Matriz {
     protected int largura;
     protected int altura;
     protected int capacidade;
 
-    public matriz(int largura, int altura){
+    public Matriz(int largura, int altura){
         this.largura = largura;
         this.altura = altura;
         this.capacidade = largura * altura;
