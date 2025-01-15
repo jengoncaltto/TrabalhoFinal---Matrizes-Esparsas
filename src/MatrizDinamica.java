@@ -1,4 +1,4 @@
-public class MatrizDinamica extends matriz{
+public class MatrizDinamica extends Matriz{
     private EloMatriz[] m; // Array de listas encadeadas (uma para cada linha)
 
     // Classe para representar os elementos na matriz
