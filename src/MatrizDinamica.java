@@ -1,4 +1,4 @@
-public class MatrizLista extends matriz{
+public class MatrizDinamica extends matriz{
     private EloMatriz[] m; // Array de listas encadeadas (uma para cada linha)
 
     // Classe para representar os elementos na matriz
@@ -12,7 +12,7 @@ public class MatrizLista extends matriz{
         }
     }
 
-    public MatrizLista(int largura, int altura){
+    public MatrizDinamica(int largura, int altura){
         super(largura, altura);
     }
 }
