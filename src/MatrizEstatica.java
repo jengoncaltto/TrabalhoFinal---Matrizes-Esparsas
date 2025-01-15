@@ -2,15 +2,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class MatrizEstatica extends matriz{
+public class MatrizEstatica extends Matriz{
     private Vector<Vector<Integer>> matriz;
     private int qtdNaoNulos;
-
-    public MatrizEstatica(int largura, int altura){
-        super(largura, altura);
-        gerarMatrizVazia();
-        this.qtdNaoNulos = 0;
-    }
 
     public MatrizEstatica(int largura, int altura){
         super(largura, altura);
@@ -162,7 +156,7 @@ public class MatrizEstatica extends matriz{
 
         for (int i = 0; i < altura; i++) {
             for (int j = 0; j < largura; j++) {
-                if(matrizTransposta.get(i).get(j) == matriz.get(i).get(j)) return false;
+                if(matrizTransposta.getMatriz().get(i).get(j).equals(matriz.get(i).get(j))) return false;
             }
         }
 
@@ -174,8 +168,6 @@ public class MatrizEstatica extends matriz{
         // fazer um if informando que não é possível somar quando as dimensões forem diferentes
         // a posição [i,j] da nova matriz e dada por A[i,j] + B[i, j]
         MatrizEstatica matrizSomada = new MatrizEstatica(matrizSecundaria.getLargura(), getAltura());
-
-
         return matrizSomada;
     }
 
@@ -189,7 +181,11 @@ public class MatrizEstatica extends matriz{
     public MatrizEstatica obterMatrizTransposta(){
         // as colunas viram linhas, e linhas as colunas
         MatrizEstatica matrizTransposta = new MatrizEstatica(getAltura(), getLargura());
-
+        for (int i = 0; i < altura; i++) {
+            for (int j = 0; j < largura; j++) {
+                matrizTransposta.inserirElemento(j, i, buscarElemento(i,j));
+            }
+        }
         return matrizTransposta;
     }
 
