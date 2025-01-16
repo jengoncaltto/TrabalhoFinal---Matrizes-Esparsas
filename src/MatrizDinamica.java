@@ -5,10 +5,12 @@ public class MatrizDinamica extends Matriz{
     private class EloMatriz {
         int coluna;
         int valor;
+        int prox;
 
         public EloMatriz(int coluna, int valor) {
             this.coluna = coluna;
             this.valor = valor;
+            this.prox = null;
         }
     }
 
