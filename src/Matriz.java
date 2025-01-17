@@ -4,21 +4,21 @@ import java.util.List;
 import java.util.Random;
 
 public class Matriz {
-    protected int largura;
-    protected int altura;
+    protected int linha;
+    protected int coluna;
     protected int capacidade;
 
-    public Matriz(int largura, int altura){
-        this.largura = largura;
-        this.altura = altura;
-        this.capacidade = largura * altura;
+    public Matriz(int linha, int coluna){
+        this.linha = linha;
+        this.coluna = coluna;
+        this.capacidade = linha * coluna;
     }
 
     protected List<Integer> gerarElementos(){
         int minZeros = calcularMinimoZeros();
         List<Integer> elementos = new ArrayList<>();
-        for (int i = 0; i < capacidade; i++) {
-            if(minZeros < i)
+        for (int i = 0; i < capacidade +1; i++) {
+            if(minZeros >= i)
                 elementos.add(0);
             else
                 elementos.add((new Random()).nextInt(0, 9));
@@ -34,12 +34,12 @@ public class Matriz {
         return (int) Math.ceil(capacidade * 0.6);
     }
 
-    public int getLargura(){
-        return this.largura;
+    public int getLinha(){
+        return this.linha;
     }
 
-    public int getAltura(){
-        return this.altura;
+    public int getColuna(){
+        return this.coluna;
     }
 
     public int getCapacidade(){
