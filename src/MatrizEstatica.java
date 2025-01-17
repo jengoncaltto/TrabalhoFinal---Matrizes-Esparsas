@@ -14,10 +14,10 @@ public class MatrizEstatica extends Matriz{
 
     private void gerarMatrizVazia(){
 
-        matriz = new Vector<>(coluna);
-        for (int i = 0; i < coluna; i++) {
-            Vector<Integer> linha = new Vector<>(this.linha);
-            for (int j = 0; j < this.linha; j++) {
+        matriz = new Vector<>(colunas);
+        for (int i = 0; i < colunas; i++) {
+            Vector<Integer> linha = new Vector<>(this.linhas);
+            for (int j = 0; j < this.linhas; j++) {
                 linha.add(0); // Preencher com zeros
             }
             matriz.add(linha);
@@ -28,8 +28,8 @@ public class MatrizEstatica extends Matriz{
         List<Integer> elementos = gerarElementos();
         int k = 1;
 
-        for (int i = 0; i < coluna; i++) {
-            for (int j = 0; j < linha; j++) {
+        for (int i = 0; i < colunas; i++) {
+            for (int j = 0; j < linhas; j++) {
                 inserirElemento(i, j, elementos.get(k));
                 if(elementos.get(k++) != 0) qtdNaoNulos++;
             }
@@ -37,7 +37,7 @@ public class MatrizEstatica extends Matriz{
     }
 
     public void inserirElemento(int linha, int coluna, int elemento){
-        matriz.get(linha).set(coluna, elemento);
+        matriz.get(linha -1).set(coluna -1, elemento);
         if(elemento != 0) qtdNaoNulos++;
     }
 
@@ -50,8 +50,8 @@ public class MatrizEstatica extends Matriz{
 
     public Vector<Integer> buscarElementoCoord(int elemento){
         Vector<Integer> vetor = new Vector<Integer>(2);
-        for (int i = 0; i < coluna; i++) {
-            for (int j = 0; j < linha; j++) {
+        for (int i = 0; i < colunas; i++) {
+            for (int j = 0; j < linhas; j++) {
                 if(buscarElemento(i, j) == elemento) {
                     vetor.add(i);
                     vetor.add(j);
@@ -64,13 +64,13 @@ public class MatrizEstatica extends Matriz{
     }
     
     public int buscarElemento(int linha, int coluna){
-        return matriz.get(linha).get(coluna);
+        return matriz.get(linha -1).get(coluna -1);
     }
-
+   
     public void imprimirMatriz(){
-        for (int i = 0; i < coluna; i++) {
-            for (int j = 0; j < linha; j++) {
-                System.out.print(buscarElemento(i, j) + " ");
+        for (int i = 0; i < colunas; i++) {
+            for (int j = 0; j < linhas; j++) {
+                System.out.print(buscarElemento(i+1, j+1) + " ");
             }
             System.out.println();
         }
@@ -82,8 +82,8 @@ public class MatrizEstatica extends Matriz{
 
     public boolean isMatrizDiagonal(){
         // Uma matriz diagonal é aquela em que todos os elementos fora da diagonal principal são zero.
-        for (int i = 0; i < coluna; i++) {
-            for (int j = 0; j < linha; j++) {
+        for (int i = 0; i < colunas; i++) {
+            for (int j = 0; j < linhas; j++) {
                 if (i == j) continue; // ignora os valores da diagonal
                 if(buscarElemento(i, j) != 0) return false; // verifica se os elementos fora da diagonal são não nulos
             }
@@ -93,12 +93,12 @@ public class MatrizEstatica extends Matriz{
 
     public boolean isMatrizLinha(){
         // Uma matriz linha é aquela em que apenas uma linha possui mais de um  elemento diferente de zero.
-        List<Vector<Integer>> linhas = new ArrayList<Vector<Integer>>();
-        for (int i = 0; i < linha; i++) {
-            if(linhas.size() > 1) return false;
-            for (int j = 0; j < coluna; j++) {
+        List<Vector<Integer>> ls = new ArrayList<Vector<Integer>>();
+        for (int i = 0; i < linhas; i++) {
+            if(ls.size() > 1) return false;
+            for (int j = 0; j < colunas; j++) {
                 if(buscarElemento(i, j) != 0){
-                    linhas.add(matriz.get(i)); // adiciona a linha com elemento(s) diferente(s) de 0 na lista
+                    ls.add(matriz.get(i)); // adiciona a linha com elemento(s) diferente(s) de 0 na lista
                     break;
                 }
 
@@ -110,12 +110,12 @@ public class MatrizEstatica extends Matriz{
 
     public boolean isMatrizColuna(){
         // Uma matriz coluna é aquela em que apenas uma coluna possui mais de um  elemento diferente de zero.
-        List<Vector<Integer>> colunas = new ArrayList<Vector<Integer>>();
-        for (int i = 0; i < coluna; i++) {
-            if(colunas.size() > 1) return false;
-            for (int j = 0; j < linha; j++) {
+        List<Vector<Integer>> cols = new ArrayList<Vector<Integer>>();
+        for (int i = 0; i < colunas; i++) {
+            if(cols.size() > 1) return false;
+            for (int j = 0; j < linhas; j++) {
                 if(buscarElemento(j, i) != 0){
-                    colunas.add(matriz.get(j)); // adiciona a coluna com elemento(s) diferente(s) de 0 na lista
+                    cols.add(matriz.get(j)); // adiciona a coluna com elemento(s) diferente(s) de 0 na lista
                     break;
                 }
                 // se houver mais de uma coluna com elemento(s) diferente(s) de 0 na lista, não é matriz coluna
@@ -126,8 +126,8 @@ public class MatrizEstatica extends Matriz{
 
     public boolean isMatrizTriangularInferior(){
         // ainda que esteja zerada, a matriz é considerada uma matriz triangular inferior porque a parte superior esta zerada.
-        for (int i = 0; i < linha; i++) {
-            for (int j = 0; j < coluna; j++) {
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
                 if(i > j || i == j){
                     if (buscarElemento(i,j) == 0){
                         return false;
@@ -146,8 +146,8 @@ public class MatrizEstatica extends Matriz{
 
     public boolean isMatrizTriangularSuperior(){
         // ainda que esteja zerada, a matriz é considerada uma matriz triangular superior porque a parte superior esta zerada.
-        for (int i = 0; i < coluna; i++) {
-            for (int j = 0; j < linha; j++) {
+        for (int i = 0; i < colunas; i++) {
+            for (int j = 0; j < linhas; j++) {
                 if(i <= j) continue;
                 
                 // verifica somente a parte inferior. Se algum elemento for diferente de 0, não é uma matriz triangular superior.
@@ -164,14 +164,14 @@ public class MatrizEstatica extends Matriz{
         MatrizEstatica matrizTransposta = obterMatrizTransposta();
 
         // A matriz só é simétrica se for uma matriz quadrada.
-        if((getColuna() != getLinha())) return false;
-        if((matrizTransposta.getColuna() != matrizTransposta.getLinha())) return false;
+        if((getColunas() != getLinhas())) return false;
+        if((matrizTransposta.getColunas() != matrizTransposta.getLinhas())) return false;
         // Elas não são simétricas se não possuírem as mesmas dimensões.
         // se elas forem quadradas e não possuírem a mesma capacidade, elas não possuem as mesmas dimensões
         if((matrizTransposta.getCapacidade() != getCapacidade())) return false;
 
-        for (int i = 0; i < coluna; i++) {
-            for (int j = 0; j < linha; j++) {
+        for (int i = 0; i < colunas; i++) {
+            for (int j = 0; j < linhas; j++) {
                 if(!matrizTransposta.getMatriz().get(i).get(j).equals(matriz.get(i).get(j))) return false;
             }
         }
@@ -183,10 +183,10 @@ public class MatrizEstatica extends Matriz{
         // verificar se ambas tem as mesmas quantidades de linhas e colunas
         // fazer um if informando que não é possível somar quando as dimensões forem diferentes
         // a posição [i,j] da nova matriz e dada por A[i,j] + B[i, j]
-        if((this.getColuna() != matrizSecundaria.getColuna() && (this.getLinha() != matrizSecundaria.getLinha()))) throw new IllegalArgumentException("As matrizes precisam ter as mesmas dimensões");
-        MatrizEstatica matrizSomada = new MatrizEstatica(getLinha(), getColuna());
-        for (int i = 0; i < coluna; i++) {
-            for (int j = 0; j < linha; j++) {
+        if((this.getColunas() != matrizSecundaria.getColunas() && (this.getLinhas() != matrizSecundaria.getLinhas()))) throw new IllegalArgumentException("As matrizes precisam ter as mesmas dimensões");
+        MatrizEstatica matrizSomada = new MatrizEstatica(getLinhas(), getColunas());
+        for (int i = 0; i < colunas; i++) {
+            for (int j = 0; j < linhas; j++) {
                 int soma = this.buscarElemento(i, j) + matrizSecundaria.buscarElemento(i, j);
 
                 matrizSomada.inserirElemento(i, j, soma);
@@ -202,16 +202,16 @@ public class MatrizEstatica extends Matriz{
 
     */
     public MatrizEstatica multiplicarMatrizes(MatrizEstatica matrizSecundaria){//alterar valores
-        if(matrizSecundaria.getLinha() != this.getColuna()) throw new IllegalArgumentException("A largura da matriz secundária deve ser igual à altura da matriz principal para multiplicação.");
-        MatrizEstatica matrizMultiplicada = new MatrizEstatica(matrizSecundaria.getLinha(), this.getColuna());
+        if(matrizSecundaria.getLinhas() != this.getColunas()) throw new IllegalArgumentException("A largura da matriz secundária deve ser igual à altura da matriz principal para multiplicação.");
+        MatrizEstatica matrizMultiplicada = new MatrizEstatica(matrizSecundaria.getLinhas(), this.getColunas());
 
         // Percorrer as linhas da matriz principal
-        for (int i = 0; i < this.getColuna(); i++) {
+        for (int i = 0; i < this.getColunas(); i++) {
             // Percorrer as colunas da matriz secundária
-            for (int j = 0; j < matrizSecundaria.getLinha(); j++) {
+            for (int j = 0; j < matrizSecundaria.getLinhas(); j++) {
                 int soma = 0;
 
-                for (int k = 0; k < this.getLinha(); k++) {
+                for (int k = 0; k < this.getLinhas(); k++) {
                     soma += this.buscarElemento(i, k) * matrizSecundaria.buscarElemento(k, j);
                 }
 
@@ -223,9 +223,9 @@ public class MatrizEstatica extends Matriz{
 
     public MatrizEstatica obterMatrizTransposta(){
         // as colunas viram linhas, e linhas as colunas
-        MatrizEstatica matrizTransposta = new MatrizEstatica(getColuna(), getLinha());
-        for (int i = 0; i < coluna; i++) {
-            for (int j = 0; j < linha; j++) {
+        MatrizEstatica matrizTransposta = new MatrizEstatica(getColunas(), getLinhas());
+        for (int i = 0; i < colunas; i++) {
+            for (int j = 0; j < linhas; j++) {
                 matrizTransposta.inserirElemento(j, i, buscarElemento(i,j));
             }
         }

@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Random;
 
 public class Matriz {
-    protected int linha;
-    protected int coluna;
+    protected int linhas;
+    protected int colunas;
     protected int capacidade;
 
     public Matriz(int linha, int coluna){
-        this.linha = linha;
-        this.coluna = coluna;
+        this.linhas = linha;
+        this.colunas = coluna;
         this.capacidade = linha * coluna;
     }
 
@@ -20,8 +20,8 @@ public class Matriz {
         for (int i = 0; i < capacidade +1; i++) {
             if(minZeros >= i)
                 elementos.add(0);
-            else
-                elementos.add((new Random()).nextInt(0, 9));
+            
+               // elementos.add((new Random()).nextInt(0, 9));
         }
 
         // Embaralha a lista para distribuir os zeros
@@ -34,12 +34,12 @@ public class Matriz {
         return (int) Math.ceil(capacidade * 0.6);
     }
 
-    public int getLinha(){
-        return this.linha;
+    public int getLinhas(){
+        return this.linhas;
     }
 
-    public int getColuna(){
-        return this.coluna;
+    public int getColunas(){
+        return this.colunas;
     }
 
     public int getCapacidade(){

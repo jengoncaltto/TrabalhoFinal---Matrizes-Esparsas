@@ -20,15 +20,15 @@ public class MainEstatica {
         estatica.inserirElemento(2,0,7);
         estatica.inserirElemento(2,1,8);
         estatica.inserirElemento(2,2,9);*/
-        estatica.inserirElemento(0,0,1);
-        estatica.inserirElemento(0,1,2);
-        estatica.inserirElemento(0,2,4);
-        estatica.inserirElemento(1,0,0);
-        estatica.inserirElemento(1,1,0);
-        estatica.inserirElemento(1,2,0);
-        estatica.inserirElemento(2,0,4);
+        estatica.inserirElemento(1,1,1);
+        estatica.inserirElemento(1,2,2);
+        estatica.inserirElemento(1,3,4);
         estatica.inserirElemento(2,1,0);
-        estatica.inserirElemento(2,2,3);
+        estatica.inserirElemento(2,2,0);
+        estatica.inserirElemento(2,3,0);
+        estatica.inserirElemento(3,1,4);
+        estatica.inserirElemento(3,2,0);
+        estatica.inserirElemento(3,3,3);
         estatica.imprimirMatriz();
         /*estatica.removerElemento(2,2);
         System.out.println("===============================");
