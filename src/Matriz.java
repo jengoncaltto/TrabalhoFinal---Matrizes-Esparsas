@@ -20,8 +20,9 @@ public class Matriz {
         for (int i = 0; i < capacidade +1; i++) {
             if(minZeros >= i)
                 elementos.add(0);
-            
-               // elementos.add((new Random()).nextInt(0, 9));
+            else{
+                elementos.add((new Random()).nextInt(0, 9));
+            }
         }
 
         // Embaralha a lista para distribuir os zeros

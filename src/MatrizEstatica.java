@@ -50,8 +50,8 @@ public class MatrizEstatica extends Matriz{
 
     public Vector<Integer> buscarElementoCoord(int elemento){
         Vector<Integer> vetor = new Vector<Integer>(2);
-        for (int i = 0; i < colunas; i++) {
-            for (int j = 0; j < linhas; j++) {
+        for (int i = 1; i < colunas+1; i++) {
+            for (int j = 1; j < linhas+1; j++) {
                 if(buscarElemento(i, j) == elemento) {
                     vetor.add(i);
                     vetor.add(j);
