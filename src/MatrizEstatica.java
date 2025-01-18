@@ -95,14 +95,13 @@ public class MatrizEstatica extends Matriz{
         // Uma matriz linha é aquela em que apenas uma linha possui mais de um  elemento diferente de zero.
         List<Vector<Integer>> ls = new ArrayList<Vector<Integer>>();
         for (int i = 0; i < linhas; i++) {
+            // se houver mais de uma linha com elemento(s) diferente(s) de 0 na lista, não é matriz linha
             if(ls.size() > 1) return false;
             for (int j = 0; j < colunas; j++) {
                 if(buscarElemento(i, j) != 0){
                     ls.add(matriz.get(i)); // adiciona a linha com elemento(s) diferente(s) de 0 na lista
                     break;
                 }
-
-                // se houver mais de uma linha com elemento(s) diferente(s) de 0 na lista, não é matriz linha
             }
         }
         return true;
@@ -112,13 +111,14 @@ public class MatrizEstatica extends Matriz{
         // Uma matriz coluna é aquela em que apenas uma coluna possui mais de um  elemento diferente de zero.
         List<Vector<Integer>> cols = new ArrayList<Vector<Integer>>();
         for (int i = 0; i < colunas; i++) {
+            // se houver mais de uma coluna com elemento(s) diferente(s) de 0 na lista, não é matriz coluna
             if(cols.size() > 1) return false;
             for (int j = 0; j < linhas; j++) {
                 if(buscarElemento(j, i) != 0){
                     cols.add(matriz.get(j)); // adiciona a coluna com elemento(s) diferente(s) de 0 na lista
                     break;
                 }
-                // se houver mais de uma coluna com elemento(s) diferente(s) de 0 na lista, não é matriz coluna
+                
             }
         }
         return true;

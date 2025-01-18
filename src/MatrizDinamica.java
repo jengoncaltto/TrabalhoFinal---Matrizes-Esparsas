@@ -1,10 +1,10 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 public class MatrizDinamica extends Matriz{
     private Vector<EloMatriz> vetorLinhas; // Array de listas encadeadas (uma para cada linha)
     private int totalElementos;
-    protected EloMatriz prim;
 
     public void setTotalElementos(int totalElementos) {
         this.totalElementos = totalElementos;
@@ -33,6 +33,10 @@ public class MatrizDinamica extends Matriz{
             vetorLinhas.add(null);
         }
         totalElementos = 0;
+    }
+    public boolean isMatrizVazia(){
+        if(vetorLinhas.isEmpty())return true;
+        return false;
     }
 
     public void gerarMatrizVazia(){
@@ -92,13 +96,6 @@ public class MatrizDinamica extends Matriz{
         }
     }
 
-    public int buscarElemento(int linha, int coluna){
-        EloMatriz p = vetorLinhas.get(linha);
-        while(p.coluna != coluna){
-            p = p.prox;
-        }
-        return p.valor;
-    }
 
     public void preencherMatriz(){
          List<Integer> elementos = gerarElementos();
@@ -112,20 +109,107 @@ public class MatrizDinamica extends Matriz{
         }
     }
 
+    public boolean removerElemento(int linha, int coluna){
+        EloMatriz p = vetorLinhas.get(linha);
+        EloMatriz ant = null;
+        while(p.coluna != coluna && p != null){
+            ant = p;    
+            p = p.prox;
+        }
+        if(p==null) return false;    
+        ant.prox = p.prox;
+        p.prox=null;
+        return true;
+    }
+
+    public int buscarElemento(int linha, int coluna){
+        EloMatriz p = vetorLinhas.get(linha);
+        while(p.coluna != coluna){
+            p = p.prox;
+        }
+        return p.valor;
+    }
+
+    public Vector<Integer> buscarElementoCoord(int elemento){
+        Vector<Integer> vetor = new Vector<>(2);
+        
+        for (int i = 0; i < linhas; i++) {
+            EloMatriz p = vetorLinhas.get(i);
+            while(p!= null && p.valor != elemento)p = p.prox;
+            vetor.add(i);
+            vetor.add(p.coluna);
+        }
+        return vetor;
+    }
+
+    public boolean isMatrizLinha(){
+         // Uma matriz linha é aquela em que apenas uma linha possui mais de um  elemento diferente de zero.
+        List<Integer> ls = new ArrayList<Integer>();
+        for (int i = 0; i < linhas; i++) {
+            // se houver mais de uma linha com elemento(s) diferente(s) de 0 na lista, não é matriz linha
+            if(ls.size() > 1) return false;
+            EloMatriz p = vetorLinhas.get(i);
+            while(p!= null){
+                if(buscarElemento(i, p.coluna) != 0){
+                    ls.add(i); // adiciona a linha com elemento(s) diferente(s) de 0 na lista
+                    p.prox = null;
+                }
+                p = p.prox;
+            }
+        }
+        return true;
+    }
+
+    
+    public boolean isMatrizColuna(){
+        // Uma matriz coluna é aquela em que apenas uma coluna possui mais de um  elemento diferente de zero.
+       List<Integer> ls = new ArrayList<Integer>();
+       for (int i = 0; i < linhas; i++) {
+           // se houver mais de uma linha com elemento(s) diferente(s) de 0 na lista, não é matriz coluna
+           if(ls.size() > 1) return false;
+           EloMatriz p = vetorLinhas.get(i);
+           while(p!= null){
+                if(buscarElemento(i, p.coluna) != 0){
+                    ls.add(p.coluna); // adiciona a coluna com elemento(s) diferente(s) de 0 na lista
+                    p.prox = null;
+                }
+                p = p.prox;
+            }
+       }
+       return true;
+   }
+
+    public boolean isMatrizTriangularInferior(){
+        // ainda que esteja zerada, a matriz é considerada uma matriz triangular inferior porque a parte superior esta zerada.
+        for (int i = 0; i < linhas; i++) {
+            EloMatriz p = vetorLinhas.get(i);
+            while(p!= null){
+                if(i > p.coluna || i == p.coluna){
+                    if (buscarElemento(i,p.coluna) == 0){
+                        return false;
+                    }
+                    
+                }
+                p = p.prox;
+            }
+            // verifica somente a parte superior. Se algum elemento for diferente de 0, não é uma matriz triangular inferior.
+            if(buscarElemento(i, p.coluna) != 0){
+                return false;
+            }
+            
+        }
+        return true;
+    }
+
+
+
     /*
-    
-    public void removerElemento(int linha, int coluna);
-    public Vector<Integer> buscarElementoCoord(int elemento);
-    
-    public boolean isMatrizVazia();
-    public boolean isMatrizLinha();
-    public boolean isMatrizColuna();
     public boolean isMatrizTriangularInferior();
     public boolean isMatrizTriangularSuperior();
     public boolean isMatrizSimetrica();
     public MatrizEstatica somarMatrizes(MatrizEstatica matrizSecundaria);
     public MatrizEstatica multiplicarMatrizes(MatrizEstatica matrizSecundaria);
     public MatrizEstatica obterMatrizTransposta();
-    public Vector<Vector<Integer>> getMatriz();*/
+    */
     
 }
