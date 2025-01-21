@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 public class Matriz {
@@ -14,19 +11,24 @@ public class Matriz {
         this.capacidade = linha * coluna;
     }
 
-    protected List<Integer> gerarElementos(){
+    protected int[]gerarElementos(){
         int minZeros = calcularMinimoZeros();
-        List<Integer> elementos = new ArrayList<>();
+        int[] elementos = new int[linhas*colunas];
         for (int i = 0; i < capacidade +1; i++) {
             if(minZeros >= i)
-                elementos.add(0);
+            	elementos[i] = 0;
             else{
-                elementos.add((new Random()).nextInt(0, 9));
+                elementos[i] = new Random().nextInt(0, 9);
             }
         }
 
         // Embaralha a lista para distribuir os zeros
-        Collections.shuffle(elementos);
+        for (int i = elementos.length - 1; i > 0; i--) {
+            int j = new Random().nextInt(i + 1);
+            int temp = elementos[i];
+            elementos[i] = elementos[j];
+            elementos[j] = temp;
+        }
         return elementos;
     }
 
