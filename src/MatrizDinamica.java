@@ -142,6 +142,8 @@ public class MatrizDinamica extends Matriz{
         return vetor;
     }
 
+    
+    // não está funcionando
     public boolean isMatrizLinha(){
          // Uma matriz linha é aquela em que apenas uma linha possui mais de um  elemento diferente de zero.
         List<Integer> ls = new ArrayList<Integer>();
@@ -160,7 +162,7 @@ public class MatrizDinamica extends Matriz{
         return true;
     }
 
-    
+    // não está funcionando
     public boolean isMatrizColuna(){
         // Uma matriz coluna é aquela em que apenas uma coluna possui mais de um  elemento diferente de zero.
        List<Integer> ls = new ArrayList<Integer>();
@@ -178,7 +180,7 @@ public class MatrizDinamica extends Matriz{
        }
        return true;
    }
-
+    // não está funcionando 
     public boolean isMatrizTriangularInferior(){
         // ainda que esteja zerada, a matriz é considerada uma matriz triangular inferior porque a parte superior esta zerada.
         for (int i = 0; i < linhas; i++) {
