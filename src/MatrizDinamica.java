@@ -161,31 +161,39 @@ public class MatrizDinamica extends Matriz{
         // Se mais de uma linha tiver elementos diferentes de zero
         
     }
+        return true;
+    }
+
+    public boolean isMatrizColuna() {
+    // Contador para cada coluna com elementos diferentes de zero
+    int[] contagemPorColuna = new int[colunas];
+    int colunasComElementos = 0;
+
+    for (int i = 0; i < linhas; i++) {
+        EloMatriz p = vetorLinhas[i];
+        
+        while (p != null) {
+            if (p.valor != 0) {
+                // Incrementa a contagem de elementos na coluna correspondente
+                contagemPorColuna[p.coluna]++;
+                
+                // Verifica se a coluna agora tem mais de um elemento diferente de zero
+                if (contagemPorColuna[p.coluna] == 1) {
+                    colunasComElementos++;
+                }
+
+                // Se mais de uma coluna contém elementos diferentes de zero, não é matriz coluna
+                if (colunasComElementos > 1) {
+                    return false;
+                }
+            }
+            p = p.prox;
+        }
+    }
 
     return true;
-}
+    }
 
-
-    // não está funcionando
-    public boolean isMatrizColuna(){
-        // Uma matriz coluna é aquela em que apenas uma coluna possui mais de um elemento diferente de zero.
-       int[] cols = new int[linhas];
-       int elementoscols = 0;
-       for (int i = 0; i < linhas; i++) {
-           // se houver mais de uma coluna com elemento(s) diferente(s) de 0, não é matriz coluna
-           if(elementoscols > 1) return false;
-           EloMatriz p = vetorLinhas[i];
-           while(p!= null){
-                if(buscarElemento(i, p.coluna) != 0){
-                    elementoscols = elementoscols +1;  // adiciona a coluna com elemento(s) diferente(s) de 0 na lista
-                    p.prox = null;
-                    
-                }
-                p = p.prox;
-            }
-       }
-       return true;
-   }
     // não está funcionando 
     public boolean isMatrizTriangularInferior(){
         // ainda que esteja zerada, a matriz é considerada uma matriz triangular inferior porque a parte superior esta zerada.
