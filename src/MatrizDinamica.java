@@ -139,7 +139,7 @@ public class MatrizDinamica extends Matriz{
         return vetor;
     }
     
-    // aparente estar funcionando corretamente
+    // nao esta funcionando
     public boolean isMatrizLinha() {
     // Contador para linhas com mais de um elemento diferente de zero
     int linhasComElementos = 0;
