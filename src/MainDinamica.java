@@ -4,10 +4,10 @@ public class MainDinamica {
         dinamica.gerarMatrizVazia();
         
         dinamica.inserirElemento(1,1,0);
-        dinamica.inserirElemento(1,2,1);
+        dinamica.inserirElemento(1,2,0);
         dinamica.inserirElemento(1,3,0);
         dinamica.inserirElemento(2,1,4);
-        dinamica.inserirElemento(2,2,5);
+        dinamica.inserirElemento(2,2,0);
         dinamica.inserirElemento(2,3,6); 
         dinamica.inserirElemento(3,1,0); 
         dinamica.inserirElemento(3,2,0); 

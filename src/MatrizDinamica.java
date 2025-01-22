@@ -138,32 +138,28 @@ public class MatrizDinamica extends Matriz{
         }
         return vetor;
     }
-    
-    // nao esta funcionando
+
     public boolean isMatrizLinha() {
     // Contador para linhas com mais de um elemento diferente de zero
-    int linhasComElementos = 0;
+    int ls = 0;
 
     for (int i = 0; i < linhas; i++) {
-        int elementosNaLinha = 0;
+        boolean linhasComElementos = false;
+        if (ls > 1) {
+            return false;
+        }
         EloMatriz p = vetorLinhas[i];
         
         while (p != null) {
             if (p.valor != 0) {
-                elementosNaLinha++;
+                linhasComElementos = true;
             }
             p = p.prox;
         }
 
-        // Incrementa o contador se a linha tiver exatamente um elemento diferente de zero
-        if (elementosNaLinha == 1) {
-            linhasComElementos++;
-        }
-
+        if(linhasComElementos) ls++;
         // Se mais de uma linha tiver elementos diferentes de zero
-        if (linhasComElementos > 1) {
-            return false;
-        }
+        
     }
 
     return true;
