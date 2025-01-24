@@ -1,51 +1,117 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
-public class Matriz {
-    protected int linhas;
-    protected int colunas;
-    protected int capacidade;
+public abstract class Matriz<T extends Matriz<T>> {
+	protected int linhas;
+	protected int colunas;
+	protected int capacidade;
 
-    public Matriz(int linha, int coluna){
-        this.linhas = linha;
-        this.colunas = coluna;
-        this.capacidade = linha * coluna;
-    }
+	public Matriz(int linha, int coluna) {
+		this.linhas = linha;
+		this.colunas = coluna;
+		this.capacidade = linha * coluna;
+	}
 
-    protected int[]gerarElementos(){
-        int minZeros = calcularMinimoZeros();
-        int[] elementos = new int[linhas*colunas];
-        for (int i = 0; i < capacidade +1; i++) {
-            if(minZeros >= i)
-            	elementos[i] = 0;
-            else{
-                elementos[i] = new Random().nextInt(0, 9);
-            }
-        }
+	public class provedorNumeros {
+		private static final List<Integer> conjuntoDeNumeros = new ArrayList<>();
+		private static int indiceAtual = 0; // Controla qual número será retornado a seguir
+		private static final int tamanhoLote = 1000; // Quantidade de números gerados por vez
+		private static final Random random = new Random();
 
-        // Embaralha a lista para distribuir os zeros
-        for (int i = elementos.length - 1; i > 0; i--) {
-            int j = new Random().nextInt(i + 1);
-            int temp = elementos[i];
-            elementos[i] = elementos[j];
-            elementos[j] = temp;
-        }
-        return elementos;
-    }
+		// Inicializa a lista com os primeiros números
+		static {
+			gerarNovosNumeros();
+		}
 
-    private int calcularMinimoZeros(){
-        // calcula a capacidade total e depois 60% dela, caso resulte em um numero decimal é arrendondado para um inteiro maior.
-        return (int) Math.ceil(capacidade * 0.6);
-    }
+		public static synchronized void reset() {
+			gerarNovosNumeros();
+			indiceAtual = 0;
+		}
 
-    public int getLinhas(){
-        return this.linhas;
-    }
+		// obter o próximo número
+		public static synchronized int next() {
 
-    public int getColunas(){
-        return this.colunas;
-    }
+			if (indiceAtual == tamanhoLote) {
+				gerarNovosNumeros();
+				indiceAtual = 0;
+			}
+			return conjuntoDeNumeros.get(indiceAtual++);
+		}
 
-    public int getCapacidade(){
-        return this.capacidade;
-    }
+		// gerar novos números
+		private static void gerarNovosNumeros() {
+			conjuntoDeNumeros.clear();
+
+			// Calcula o número de elementos iguais a 0 (60%)
+			int qtdZeros = (int) (tamanhoLote * 0.6);
+
+			// Adiciona os 0 na lista
+			for (int i = 0; i < qtdZeros; i++) {
+				conjuntoDeNumeros.add(0);
+			}
+
+			// Adiciona os números aleatórios de 1 a 9 (restantes 40%)
+			for (int i = 0; i < (tamanhoLote - qtdZeros); i++) {
+				conjuntoDeNumeros.add(random.nextInt(9) + 1); // Gera números de 1 a 9
+			}
+
+			// Embaralha a lista
+			Collections.shuffle(conjuntoDeNumeros);
+		}
+	}
+
+	protected int proximoNumero() {
+		return provedorNumeros.next();
+	}
+
+	private int calcularMinimoZeros() {
+		// calcula a capacidade total e depois 60% dela, caso resulte em um numero decimal é arrendondado para um inteiro maior.
+		return (int) Math.ceil(capacidade * 0.6);
+	}
+
+	public int getLinhas() {
+		return this.linhas;
+	}
+
+	public int getColunas() {
+		return this.colunas;
+	}
+
+	public int getCapacidade() {
+		return this.capacidade;
+	}
+
+	public abstract void inserirElemento(int linha, int coluna, int elements);
+
+	public abstract boolean removerElemento(int linha, int coluna, int elements);
+
+	public abstract int buscarElemento(int linha, int coluna);
+
+	public abstract void imprimirMatriz();
+
+	public abstract void gerarMatrizVazia();
+
+	public abstract boolean ehVazia();
+
+	public abstract boolean ehDiagonal();
+
+	public abstract boolean ehMatrizLinha();
+
+	public abstract boolean ehMatrizColuna();
+
+	public abstract boolean ehTriangularInfeior();
+
+	public abstract boolean ehTriangularSuperior();
+
+	public abstract boolean ehSimetrica();
+
+	public abstract T somarMatriz(T outraMatriz);
+
+	public abstract T multiplicarMatriz(T outraMatriz);
+
+	public abstract T obterMatrizTransposta();
+
+	public abstract void preencherMatriz();
 }
