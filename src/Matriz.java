@@ -83,9 +83,9 @@ public abstract class Matriz<T extends Matriz<T>> {
 		return this.capacidade;
 	}
 
-	public abstract void inserirElemento(int linha, int coluna, int elements);
+	public abstract void inserirElemento(int linha, int coluna, int elemento);
 
-	public abstract boolean removerElemento(int linha, int coluna, int elements);
+	public abstract boolean removerElemento(int linha, int coluna);
 
 	public abstract int buscarElemento(int linha, int coluna);
 

@@ -129,8 +129,17 @@ public class MatrizDinamica extends Matriz<MatrizDinamica> {
 	}
 
 	@Override
-	public boolean removerElemento(int linha, int coluna, int elements) {
-		return false;
+	public boolean removerElemento(int linha, int coluna) {
+		Elo p = vetorLinhas[linha];
+		Elo ant = null;
+		while (p.coluna != coluna && p != null) {
+			ant = p;
+			p = p.prox;
+		}
+		if (p == null) return false;
+		ant.prox = p.prox;
+		p.prox = null;
+		return true;
 	}
 
 	public void imprimirMatriz() {
@@ -166,19 +175,6 @@ public class MatrizDinamica extends Matriz<MatrizDinamica> {
 //			}
 //		}
 //	}
-
-	public boolean removerElemento(int linha, int coluna) {
-		Elo p = vetorLinhas[linha];
-		Elo ant = null;
-		while (p.coluna != coluna && p != null) {
-			ant = p;
-			p = p.prox;
-		}
-		if (p == null) return false;
-		ant.prox = p.prox;
-		p.prox = null;
-		return true;
-	}
 
 	public int buscarElemento(int linha, int coluna) {
 		Elo p = vetorLinhas[linha];

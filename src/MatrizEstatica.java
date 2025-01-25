@@ -1,4 +1,4 @@
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class MatrizEstatica extends Matriz<MatrizEstatica> {
 	private final int[][] matriz;
@@ -22,7 +22,7 @@ public class MatrizEstatica extends Matriz<MatrizEstatica> {
 	}
 
 	@Override
-	public boolean removerElemento(int linha, int coluna, int elements) {
+	public boolean removerElemento(int linha, int coluna) {
 		//para remover, o elemento é substituído por 0 para manter o tamanho da matriz
 		var item = matriz[linha - 1][coluna - 1];
 		matriz[linha - 1][coluna - 1] = 0;
@@ -116,10 +116,9 @@ public class MatrizEstatica extends Matriz<MatrizEstatica> {
 	public boolean ehSimetrica() {
 		if (linhas != colunas) return false; // não é quadrada
 
-		int[][] transposta = this.obterMatrizTransposta().getMatriz();
 		for (int i = 0; i < this.linhas; i++) {
 			for (int j = 0; j < colunas; j++) {
-				if (matriz[i][j] != transposta[i][j]) {
+				if (i != j && matriz[i][j] != matriz[j][i]) {
 					return false;
 				}
 			}
@@ -136,7 +135,7 @@ public class MatrizEstatica extends Matriz<MatrizEstatica> {
 		MatrizEstatica matrizSoma = new MatrizEstatica(this.linhas, this.colunas);
 		for (int i = 0; i < this.colunas; i++) {
 			for (int j = 0; j < this.linhas; j++) {
-				matrizSoma.inserirElemento(i, j, this.matriz[i][j] + outraMatriz.buscarElemento(i, j));
+				matrizSoma.inserirElemento(i + 1, j + 1, this.matriz[i][j] + outraMatriz.buscarElemento(i + 1, j + 1));
 			}
 		}
 		return matrizSoma;
@@ -163,7 +162,7 @@ public class MatrizEstatica extends Matriz<MatrizEstatica> {
 				}
 			}
 
-			if (i % (this.linhas / 50) == 0) {
+			if (this.linhas >= 50 && i % (this.linhas / 50) == 0) {
 				System.out.print("█"); // Escreve um quadradinho no console
 			}
 		}
@@ -175,9 +174,9 @@ public class MatrizEstatica extends Matriz<MatrizEstatica> {
 	public MatrizEstatica obterMatrizTransposta() {
 		// as colunas viram linhas, e linhas as colunas
 		MatrizEstatica matrizTransposta = new MatrizEstatica(this.colunas, this.linhas);
-		for (int i = 0; i < colunas; i++) {
-			for (int j = 0; j < linhas; j++) {
-				matrizTransposta.inserirElemento(j, i, this.matriz[i][j]);
+		for (int i = 1; i <= this.linhas; i++) {
+			for (int j = 1; j <= this.colunas; j++) {
+				matrizTransposta.inserirElemento(j, i, this.matriz[i - 1][j - 1]);
 			}
 		}
 		return matrizTransposta;
@@ -188,18 +187,18 @@ public class MatrizEstatica extends Matriz<MatrizEstatica> {
 		provedorNumeros.reset();
 		System.out.printf("Preenchendo matriz de %s linhas...", this.linhas);
 		System.out.println("Começando as " + Relogio.Timestamp());
-		LocalTime inicio = LocalTime.now();
+		LocalDateTime inicio = LocalDateTime.now();
 		for (int i = 0; i < this.linhas; i++) {
 			for (int j = 0; j < this.colunas; j++) {
 				this.matriz[i][j] = this.proximoNumero();
 				if (this.matriz[i][j] != 0) qtdNaoNulos++;
 			}
-			if (i % (this.linhas / 10) == 0) {
-				System.out.printf("[%s%%]", (int) (100 * i / this.linhas)); // Escreve um quadradinho no console
+			if (this.linhas > 10 && (i % (this.linhas / 10) == 0)) {
+				System.out.printf("[%s%%]", (int) (100 * i / this.linhas));
 			}
 		}
 		System.out.println("[100%]");
 		System.out.print("Terminou as " + Relogio.Timestamp());
-		System.out.println(", -Tempo total: " + Relogio.Passou(inicio));
+		System.out.println(", Tempo total: " + Relogio.Passou(inicio));
 	}
 }
