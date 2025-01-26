@@ -17,7 +17,7 @@ public abstract class Matriz<T extends Matriz<T>> {
 	public class provedorNumeros {
 		private static final List<Integer> conjuntoDeNumeros = new ArrayList<>();
 		private static int indiceAtual = 0; // Controla qual número será retornado a seguir
-		private static final int tamanhoLote = 1000; // Quantidade de números gerados por vez
+		private static int tamanhoLote; // Quantidade de números gerados por vez
 		private static final Random random = new Random();
 
 		// Inicializa a lista com os primeiros números
@@ -25,7 +25,13 @@ public abstract class Matriz<T extends Matriz<T>> {
 			gerarNovosNumeros();
 		}
 
-		public static synchronized void reset() {
+		public static synchronized void reset(int elementos) {
+
+			// pra testes pequenos gera quantidade certa de elementos
+			// pra testes massivos (10000x10000 etc) gera de 1000 em 1000 pra não sobrecarregar
+			// o sistema tentando criar arrays de milhões de posições
+
+			tamanhoLote = elementos % 1000 == 0 ? 1000 : elementos;
 			gerarNovosNumeros();
 			indiceAtual = 0;
 		}
@@ -97,9 +103,13 @@ public abstract class Matriz<T extends Matriz<T>> {
 
 	public abstract boolean ehDiagonal();
 
-	public abstract boolean ehMatrizLinha();
+	public boolean ehMatrizLinha() {
+		return this.linhas == 1;
+	}
 
-	public abstract boolean ehMatrizColuna();
+	public boolean ehMatrizColuna() {
+		return this.colunas == 1;
+	}
 
 	public abstract boolean ehTriangularInfeior();
 

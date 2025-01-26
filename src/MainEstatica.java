@@ -15,9 +15,9 @@ public class MainEstatica {
 //		System.out.println();
 //		System.out.println("terminou depois de " + Relogio.Passou(inicio));
 		//	bla.imprimirMatriz();
-
-
-//		MatrizEstatica m10 = new MatrizEstatica(3, 5);
+//
+//
+//		MatrizEstatica m10 = new MatrizEstatica(43, 68);
 //		m10.preencherMatriz();
 //		m10.imprimirMatriz();
 //		System.out.println("============");

@@ -3,12 +3,8 @@ public class MatrizDinamica extends Matriz<MatrizDinamica> {
 	private Elo[] vetorLinhas; // Array de listas encadeadas (uma para cada linha)
 	private int totalElementos;
 
-	public void setTotalElementos(int totalElementos) {
-		this.totalElementos = totalElementos;
-	}
-
 	// Classe para representar os elementos na matriz
-	protected class Elo {
+	protected static class Elo {
 		private int coluna;
 		private int valor;
 		private Elo prox;
@@ -21,270 +17,339 @@ public class MatrizDinamica extends Matriz<MatrizDinamica> {
 	}
 
 	public MatrizDinamica(int linha, int coluna) {
-
 		super(linha, coluna);
-		this.vetorLinhas = new Elo[linhas];
-		this.gerarMatrizVazia();
-		totalElementos = 0;
+		this.vetorLinhas = new Elo[this.linhas];
+		this.totalElementos = 0;
 	}
 
-	public boolean isMatrizVazia() {
-		if (vetorLinhas.length == 0) return true;
-		return false;
-	}
+	@Override
+	public void preencherMatriz() {
+		provedorNumeros.reset(this.capacidade);
 
-	public void gerarMatrizVazia() {
-		// Inicializa cada linha como nula
-		for (int i = 0; i < linhas; i++) {
-			vetorLinhas[i] = null;
+		// Percorre as linhas em ordem reversa
+		// para sempre inserir na primeira posição (sem percorrer as listas)
+
+		for (int linha = this.linhas; linha >= 1; linha--) {
+			for (int coluna = this.colunas; coluna >= 1; coluna--) {
+				int valor = this.proximoNumero();
+				if (valor != 0)
+					this.inserirElemento(linha, coluna, valor);
+			}
 		}
 	}
 
 	@Override
-	public boolean ehVazia() {
-		return false;
-	}
-
-	@Override
-	public boolean ehDiagonal() {
-		return false;
-	}
-
-	@Override
-	public boolean ehMatrizLinha() {
-		return false;
-	}
-
-	@Override
-	public boolean ehMatrizColuna() {
-		return false;
-	}
-
-	@Override
-	public boolean ehTriangularInfeior() {
-		return false;
-	}
-
-	@Override
-	public boolean ehTriangularSuperior() {
-		return false;
-	}
-
-	@Override
-	public boolean ehSimetrica() {
-		return false;
-	}
-
-	@Override
-	public MatrizDinamica somarMatriz(MatrizDinamica outraMatriz) {
-		return null;
-	}
-
-	@Override
-	public MatrizDinamica multiplicarMatriz(MatrizDinamica outraMatriz) {
-		return null;
-	}
-
-	@Override
-	public MatrizDinamica obterMatrizTransposta() {
-		return null;
-	}
-
 	public void inserirElemento(int linha, int coluna, int elemento) {
-		linha = linha - 1;
-		coluna = coluna - 1;
-		// Obtém a lista encadeada da linha
-		Elo p = vetorLinhas[linha];
-		// adiciona na primeira posição que é null
-		if (p == null) {
-			vetorLinhas[linha] = new Elo(coluna, elemento);
-			totalElementos++;
+		linha--;
+		coluna--;
+
+		if (linha < 0 || linha >= this.linhas || coluna < 0 || coluna >= this.colunas)
+			throw new IllegalArgumentException("Linha ou coluna fora dos limites.");
+
+		if (elemento == 0) {
+			removerElemento(linha, coluna);
 			return;
 		}
 
-		Elo ant = null;
-		while (p != null && p.coluna < coluna) {
-			ant = p;
-			p = p.prox;
+		Elo atual = this.vetorLinhas[linha];
+		Elo anterior = null;
+
+		// procura posição pra inserir
+		while (atual != null && atual.coluna < coluna) {
+			anterior = atual;
+			atual = atual.prox;
 		}
 
-		if (ant != null && ant.coluna == coluna) {
-			// Atualiza o valor se a coluna já existir
-			p.valor = elemento;
+		// Atualiza o valor se a coluna já existir
+		if (atual != null && atual.coluna == coluna) {
+			atual.valor = elemento;
+			return;
+		}
+
+		Elo novoElo = new Elo(coluna, elemento);
+
+		// Inserir o novo elo na posição correta
+		if (anterior == null) {
+			// Inserção no início da lista
+			this.vetorLinhas[linha] = novoElo;
 		} else {
-			// Cria o novo elemento
-			Elo novo = new Elo(coluna, elemento);
-			if (ant == null) {
-				// Insere no início da lista
-				novo.prox = p;
-				vetorLinhas[linha] = novo;
-			} else {
-				// Insere entre os nós ou no final
-				novo.prox = p;
-				ant.prox = novo;
-
-			}
+			// Inserção entre dois elos ou no final
+			anterior.prox = novoElo;
 		}
-		setTotalElementos(totalElementos++);
+		novoElo.prox = atual;
+
+		this.totalElementos++;
 	}
 
 	@Override
 	public boolean removerElemento(int linha, int coluna) {
-		Elo p = vetorLinhas[linha];
-		Elo ant = null;
-		while (p.coluna != coluna && p != null) {
-			ant = p;
-			p = p.prox;
+		linha--;
+		coluna--;
+		Elo atual = this.vetorLinhas[linha];
+		Elo anterior = null;
+
+		// achar o elemento
+		while (atual != null && atual.coluna < coluna) {
+			anterior = atual;
+			atual = atual.prox;
 		}
-		if (p == null) return false;
-		ant.prox = p.prox;
-		p.prox = null;
-		return true;
+
+		if (atual != null && atual.coluna == coluna) {
+			if (anterior == null) {
+				this.vetorLinhas[linha] = atual.prox; // primeiro
+			} else {
+				anterior.prox = atual.prox; // no meio ou final
+			}
+			this.totalElementos--;
+			return true;
+		}
+		return false;
 	}
 
+	@Override
+	public int buscarElemento(int linha, int coluna) {
+		linha--;
+		coluna--;
+		if (linha < 0 || linha >= this.linhas || coluna < 0 || coluna >= this.colunas)
+			throw new IllegalArgumentException("Linha ou coluna fora dos limites.");
+
+		Elo atual = this.vetorLinhas[linha];
+
+		while (atual != null) {
+			if (atual.coluna == coluna)
+				return atual.valor; // se achou, retorna
+
+			atual = atual.prox;
+		}
+
+		// como não achou, é 0.
+		return 0;
+	}
+
+	@Override
 	public void imprimirMatriz() {
 		for (int i = 0; i < linhas; i++) {
-			Elo p = vetorLinhas[i];
-			while (p != null) {
-				System.out.print(p.valor + " ");
-				p = p.prox;
+			Elo atual = vetorLinhas[i];
+
+			for (int j = 0; j < colunas; j++) {
+				if (atual != null && atual.coluna == j) {
+					System.out.print(atual.valor + " ");
+					atual = atual.prox;
+				} else {
+					// se não havia elemento, imprime 0
+					System.out.print("0 ");
+				}
 			}
+
 			System.out.println();
 		}
 	}
 
 	@Override
-	public void preencherMatriz() {
-		provedorNumeros.reset();
-
-		for (int i = 0; i < colunas; i++) {
-			for (int j = 0; j < linhas; j++) {
-				inserirElemento(i, j, this.proximoNumero());
-			}
-		}
+	public void gerarMatrizVazia() {
+		// Matriz vazia é vetor de nulos, então basta criar novo vetor.
+		this.vetorLinhas = new Elo[linhas];
+		this.totalElementos = 0;
 	}
 
-//	public void preencherMatriz() {
-//		int[] elementos = gerarElementos();
-//		int k = 0;
-//
-//		for (int i = 1; i <= linhas; i++) {
-//			for (int j = 1; j <= colunas; j++) {
-//				inserirElemento(i, j, elementos[k]);
-//				k = k++;
-//			}
-//		}
-//	}
-
-	public int buscarElemento(int linha, int coluna) {
-		Elo p = vetorLinhas[linha];
-		while (p.coluna != coluna) {
-			p = p.prox;
-		}
-		return p.valor;
+	@Override
+	public boolean ehVazia() {
+		return this.totalElementos == 0;
 	}
 
-	public int[] buscarElementoCoord(int elemento) {
-		int[] vetor = new int[2];
+	@Override
+	public boolean ehDiagonal() {
+		// Verifica se a matriz é quadrada
+		if (linhas != colunas)
+			return false;
+
+		// vazia tb é diagonal
+		if (this.ehVazia())
+			return true;
 
 		for (int i = 0; i < linhas; i++) {
-			Elo p = vetorLinhas[i];
-			while (p != null && p.valor != elemento) p = p.prox;
-			if (p.valor == elemento && p != null) {
-				vetor[0] = i;
-				vetor[1] = p.coluna;
-				break;
+			Elo atual = vetorLinhas[i]; // Pega o início da lista da linha
+
+			if (atual != null) {
+				// 1) Verificar se o elemento está na diagonal principal
+				if (atual.coluna != i)
+					return false; // Está fora da diagonal
+
+				// 2) Verificar se existe mais de um elemento na linha
+				if (atual.prox != null)
+					return false; // Linha tem mais de um elemento
 			}
 		}
-		return vetor;
+
+		// Passou por todas as verificações, é diagonal
+		return true;
 	}
 
-	public boolean isMatrizLinha() {
-		// Contador para linhas com mais de um elemento diferente de zero
-		int ls = 0;
+	@Override
+	public boolean ehTriangularInfeior() {
+		// Verifica se a matriz é quadrada
+		if (linhas != colunas)
+			return false;
+
+		// vazia tb é triangular inferior e superior
+		if (this.ehVazia())
+			return true;
 
 		for (int i = 0; i < linhas; i++) {
-			boolean linhasComElementos = false;
-			if (ls > 1) {
-				return false;
-			}
-			Elo p = vetorLinhas[i];
+			Elo atual = vetorLinhas[i];
 
-			while (p != null) {
-				if (p.valor != 0) {
-					linhasComElementos = true;
+			// Percorre os elementos da lista da linha até a diagonal
+			while (atual != null) {
+				if (atual.coluna == i) {
+					// Verifica se é o último elemento na linha
+					if (atual.prox != null)
+						return false; // Existe algum elemento após a diagonal
+					break;
 				}
-				p = p.prox;
+				atual = atual.prox;
 			}
+		}
+		return true; // Todas as condições para triangular inferior foram atendidas
+	}
 
-			if (linhasComElementos) ls++;
-			// Se mais de uma linha tiver elementos diferentes de zero
+	@Override
+	public boolean ehTriangularSuperior() {
+		// Verifica se a matriz é quadrada
+		if (linhas != colunas)
+			return false;
 
+		// vazia tb é triangular inferior e superior
+		if (this.ehVazia())
+			return true;
+
+		for (int i = 0; i < linhas; i++) {
+			Elo atual = vetorLinhas[i];
+
+			// se existir algum elemento na linha...
+			if (atual != null) {
+				// ... deve ser o elemento da diagonal
+				if (atual.coluna < i)
+					return false; // Existe um elemento abaixo da diagonal
+			}
 		}
 		return true;
 	}
 
-	public boolean isMatrizColuna() {
-		// Contador para cada coluna com elementos diferentes de zero
-		int[] contagemPorColuna = new int[colunas];
-		int colunasComElementos = 0;
+	@Override
+	public boolean ehSimetrica() {
+		// verifica se é quadrada pq só quadrada pode ser simétrica
+		if (linhas != colunas)
+			return false;
 
 		for (int i = 0; i < linhas; i++) {
-			Elo p = vetorLinhas[i];
+			Elo atual = vetorLinhas[i];
 
-			while (p != null) {
-				if (p.valor != 0) {
-					// Incrementa a contagem de elementos na coluna correspondente
-					contagemPorColuna[p.coluna]++;
+			// Percorre os elementos da lista da linha i
+			while (atual != null) {
+				int j = atual.coluna; // Coluna atual
 
-					// Verifica se a coluna agora tem mais de um elemento diferente de zero
-					if (contagemPorColuna[p.coluna] == 1) {
-						colunasComElementos++;
-					}
-
-					// Se mais de uma coluna contém elementos diferentes de zero, não é matriz coluna
-					if (colunasComElementos > 1) {
-						return false;
-					}
+				// Verifica se o elemento atual é igual ao seu transposto
+				if (i != j && atual.valor != buscarElemento(j + 1, i + 1)) {
+					return false; // A matriz não é simétrica
 				}
-				p = p.prox;
-			}
-		}
 
-		return true;
-	}
-
-	// não está funcionando
-	public boolean isMatrizTriangularInferior() {
-		// ainda que esteja zerada, a matriz é considerada uma matriz triangular inferior porque a parte superior esta zerada.
-		for (int i = 0; i < linhas; i++) {
-			Elo p = vetorLinhas[i];
-			while (p != null) {
-				if (i > p.coluna || i == p.coluna) {
-					if (buscarElemento(i, p.coluna) == 0) {
-						return false;
-					}
-				}
-				p = p.prox;
+				atual = atual.prox; // Avança para o próximo elemento na linha
 			}
-			// verifica somente a parte superior. Se algum elemento for diferente de 0, não é uma matriz triangular inferior.
-			if (buscarElemento(i, p.coluna) != 0) {
-				return false;
-			}
-
 		}
 		return true;
 	}
 
+	@Override
+	public MatrizDinamica somarMatriz(MatrizDinamica outraMatriz) {
+		if (this.linhas != outraMatriz.linhas || this.colunas != outraMatriz.colunas) {
+			throw new IllegalArgumentException("As matrizes precisam ter as mesmas dimensões para poder somar.");
+		}
 
+		MatrizDinamica matrizSoma = new MatrizDinamica(this.linhas, this.colunas);
 
-    /*
-    public boolean isMatrizTriangularInferior();
-    public boolean isMatrizTriangularSuperior();
-    public boolean isMatrizSimetrica();
-    public MatrizEstatica somarMatrizes(MatrizEstatica matrizSecundaria);
-    public MatrizEstatica multiplicarMatrizes(MatrizEstatica matrizSecundaria);
-    public MatrizEstatica obterMatrizTransposta();
-    */
+		// Percorre cada linha das matrizes
+		for (int i = 0; i < this.linhas; i++) {
+			Elo atual = this.vetorLinhas[i];
+			Elo outra = outraMatriz.vetorLinhas[i];
 
+			// Itera simultaneamente pelas listas encadeadas das duas matrizes
+			while (atual != null || outra != null) {
+				if (atual != null && (outra == null || atual.coluna < outra.coluna)) { // Elemento só na matriz atual
+					matrizSoma.inserirElemento(i + 1, atual.coluna + 1, atual.valor);
+					atual = atual.prox;
+				} else if (atual == null || outra.coluna < atual.coluna) { // Elemento só na outra matriz
+					matrizSoma.inserirElemento(i + 1, outra.coluna + 1, outra.valor);
+					outra = outra.prox;
+				} else {
+					// Elemento nas duas matrizes (somar valores)
+					matrizSoma.inserirElemento(i + 1, atual.coluna + 1, atual.valor + outra.valor);
+					atual = atual.prox;
+					outra = outra.prox;
+				}
+			}
+		}
+
+		return matrizSoma;
+	}
+
+	@Override
+	public MatrizDinamica multiplicarMatriz(MatrizDinamica matriz2) {
+		// Verifica se a multiplicação é válida (número de colunas da primeira matriz deve ser igual ao número de linhas da segunda)
+		if (this.colunas != matriz2.linhas) {
+			throw new IllegalArgumentException("Para poder multiplicar, o número de colunas da primeira matriz deve ser igual ao número de linhas da segunda matriz.");
+		}
+
+		MatrizDinamica matrizResultado = new MatrizDinamica(this.linhas, matriz2.colunas);
+
+		// varre linhas da matriz1 (this)
+		for (int linhaM1 = 0; linhaM1 < this.linhas; linhaM1++) {
+			Elo elementoM1 = this.vetorLinhas[linhaM1];
+
+			// varre cada elemento na linha atual da matriz1
+			while (elementoM1 != null) {
+				int colunaM1 = elementoM1.coluna; // Coluna do elemento atual na matriz1
+				int valorM1 = elementoM1.valor;  // Valor do elemento atual na matriz1
+
+				// linha correspondente na matriz2 pra multiplicar
+				Elo elementoLinhaM2 = matriz2.vetorLinhas[colunaM1];
+
+				// varre os elementos dessa linha correspondente na matriz2
+				while (elementoLinhaM2 != null) {
+					int colunaMResultado = elementoLinhaM2.coluna;
+					int valorM2 = elementoLinhaM2.valor;
+
+					// Soma o produto ao elemento correspondente na matriz resultado
+					int valorAtualResultado = matrizResultado.buscarElemento(linhaM1 + 1, colunaMResultado + 1);
+					matrizResultado.inserirElemento(linhaM1 + 1, colunaMResultado + 1, valorAtualResultado + valorM1 * valorM2);
+
+					elementoLinhaM2 = elementoLinhaM2.prox; // Avança para o próximo elemento na linha da matriz2
+				}
+
+				elementoM1 = elementoM1.prox; // Avança para o próximo elemento na linha da matriz1
+			}
+		}
+
+		return matrizResultado;
+	}
+
+	@Override
+	public MatrizDinamica obterMatrizTransposta() {
+		MatrizDinamica matrizTransposta = new MatrizDinamica(this.colunas, this.linhas);
+
+		if (this.ehVazia())
+			return matrizTransposta; // nada a fazer
+
+		for (int i = 0; i < this.linhas; i++) {
+			Elo atual = this.vetorLinhas[i];
+
+			// Percorre cada elemento da linha
+			while (atual != null) {
+				// Insere o elemento na posição transposta
+				matrizTransposta.inserirElemento(atual.coluna + 1, i + 1, atual.valor);
+				atual = atual.prox;
+			}
+		}
+
+		return matrizTransposta;
+	}
 }

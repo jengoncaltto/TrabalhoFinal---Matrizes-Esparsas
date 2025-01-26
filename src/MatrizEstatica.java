@@ -64,6 +64,14 @@ public class MatrizEstatica extends Matriz<MatrizEstatica> {
 
 	@Override
 	public boolean ehDiagonal() {
+		// Verifica se a matriz é quadrada
+		if (linhas != colunas)
+			return false;
+
+		// vazia tb é diagonal
+		if (this.ehVazia())
+			return true;
+
 		// Uma matriz diagonal é aquela em que todos os elementos fora da diagonal principal são zero.
 		for (int i = 0; i < colunas; i++) {
 			for (int j = 0; j < linhas; j++) {
@@ -72,16 +80,6 @@ public class MatrizEstatica extends Matriz<MatrizEstatica> {
 			}
 		}
 		return true;
-	}
-
-	@Override
-	public boolean ehMatrizLinha() {
-		return this.linhas == 1;
-	}
-
-	@Override
-	public boolean ehMatrizColuna() {
-		return this.colunas == 1;
 	}
 
 	@Override
@@ -149,7 +147,7 @@ public class MatrizEstatica extends Matriz<MatrizEstatica> {
 	@Override
 	public MatrizEstatica multiplicarMatriz(MatrizEstatica outraMatriz) {
 		if (outraMatriz == null || (outraMatriz.getLinhas() != this.colunas))
-			throw new IllegalArgumentException("A largura da matriz secundária deve ser igual à altura da matriz principal para multiplicação.");
+			throw new IllegalArgumentException("Para poder multiplicar, o número de colunas da primeira matriz deve ser igual ao número de linhas da segunda matriz.");
 
 		// Cria a matriz resultado com dimensões apropriadas
 		MatrizEstatica matrizMultiplicada = new MatrizEstatica(this.linhas, outraMatriz.getColunas());
@@ -184,7 +182,7 @@ public class MatrizEstatica extends Matriz<MatrizEstatica> {
 
 	@Override
 	public void preencherMatriz() {
-		provedorNumeros.reset();
+		provedorNumeros.reset(this.capacidade);
 		System.out.printf("Preenchendo matriz de %s linhas...", this.linhas);
 		System.out.println("Começando as " + Relogio.Timestamp());
 		LocalDateTime inicio = LocalDateTime.now();
@@ -193,7 +191,7 @@ public class MatrizEstatica extends Matriz<MatrizEstatica> {
 				this.matriz[i][j] = this.proximoNumero();
 				if (this.matriz[i][j] != 0) qtdNaoNulos++;
 			}
-			if (this.linhas > 10 && (i % (this.linhas / 10) == 0)) {
+			if (this.capacidade > 100000 && this.linhas > 10 && (i % (this.linhas / 10) == 0)) {
 				System.out.printf("[%s%%]", (int) (100 * i / this.linhas));
 			}
 		}
