@@ -160,8 +160,12 @@ public class MatrizEstatica extends Matriz<MatrizEstatica> {
 				}
 			}
 
-			if (this.linhas >= 50 && i % (this.linhas / 50) == 0) {
+			if (this.capacidade > 10000000 && this.linhas >= 50 && i % (this.linhas / 50) == 0) {
 				System.out.print("█"); // Escreve um quadradinho no console
+			}
+
+			if (this.capacidade > 10000000 && this.linhas > 10 && (i % (this.linhas / 10) == 0)) {
+				System.out.printf("[%s%%]", (int) (100 * i / this.linhas));
 			}
 		}
 
@@ -191,12 +195,12 @@ public class MatrizEstatica extends Matriz<MatrizEstatica> {
 				this.matriz[i][j] = this.proximoNumero();
 				if (this.matriz[i][j] != 0) qtdNaoNulos++;
 			}
-			if (this.capacidade > 100000 && this.linhas > 10 && (i % (this.linhas / 10) == 0)) {
+			if (this.capacidade > 10000000 && this.linhas > 10 && (i % (this.linhas / 10) == 0)) {
 				System.out.printf("[%s%%]", (int) (100 * i / this.linhas));
 			}
 		}
 		System.out.println("[100%]");
 		System.out.print("Terminou as " + Relogio.Timestamp());
-		System.out.println(", Tempo total: " + Relogio.Passou(inicio));
+		System.out.println(", Tempo total: " + Relogio.tempoGasto(inicio));
 	}
 }

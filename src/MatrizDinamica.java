@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 
 public class MatrizDinamica extends Matriz<MatrizDinamica> {
 	private Elo[] vetorLinhas; // Array de listas encadeadas (uma para cada linha)
@@ -36,6 +37,7 @@ public class MatrizDinamica extends Matriz<MatrizDinamica> {
 					this.inserirElemento(linha, coluna, valor);
 			}
 		}
+		System.out.println();
 	}
 
 	@Override
@@ -287,6 +289,10 @@ public class MatrizDinamica extends Matriz<MatrizDinamica> {
 					outra = outra.prox;
 				}
 			}
+
+			if (this.capacidade > 10000000 && this.linhas > 10 && (i % (this.linhas / 10) == 0)) {
+				System.out.printf("[%s%%]", (100 * (i + 1) / this.linhas));
+			}
 		}
 
 		return matrizSoma;
@@ -300,6 +306,10 @@ public class MatrizDinamica extends Matriz<MatrizDinamica> {
 		}
 
 		MatrizDinamica matrizResultado = new MatrizDinamica(this.linhas, matriz2.colunas);
+
+		LocalDateTime inicio = LocalDateTime.now();
+
+		System.out.println("Começando multiplicação as " + Relogio.Timestamp()); // Escreve um quadradinho no console
 
 		// varre linhas da matriz1 (this)
 		for (int linhaM1 = 0; linhaM1 < this.linhas; linhaM1++) {
@@ -327,6 +337,10 @@ public class MatrizDinamica extends Matriz<MatrizDinamica> {
 
 				elementoM1 = elementoM1.prox; // Avança para o próximo elemento na linha da matriz1
 			}
+
+			if (this.capacidade > 10000000 && (linhaM1 % 10 == 0)) {
+				System.out.println(Relogio.tempoGasto(inicio) + " - Linha " + linhaM1 + " de " + this.linhas + " processada."); // Escreve um quadradinho no console
+			}
 		}
 
 		return matrizResultado;
@@ -347,6 +361,10 @@ public class MatrizDinamica extends Matriz<MatrizDinamica> {
 				// Insere o elemento na posição transposta
 				matrizTransposta.inserirElemento(atual.coluna + 1, i + 1, atual.valor);
 				atual = atual.prox;
+			}
+
+			if (this.capacidade > 10000000 && this.linhas > 10 && (i % (this.linhas / 10) == 0)) {
+				System.out.printf("[%s%%]", (100 * (i + 1) / this.linhas));
 			}
 		}
 

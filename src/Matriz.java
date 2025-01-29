@@ -6,15 +6,15 @@ import java.util.Random;
 public abstract class Matriz<T extends Matriz<T>> {
 	protected int linhas;
 	protected int colunas;
-	protected int capacidade;
+	protected long capacidade;
 
 	public Matriz(int linha, int coluna) {
 		this.linhas = linha;
 		this.colunas = coluna;
-		this.capacidade = linha * coluna;
+		this.capacidade = (long) linha * coluna;
 	}
 
-	public class provedorNumeros {
+	public static class provedorNumeros {
 		private static final List<Integer> conjuntoDeNumeros = new ArrayList<>();
 		private static int indiceAtual = 0; // Controla qual número será retornado a seguir
 		private static int tamanhoLote; // Quantidade de números gerados por vez
@@ -25,13 +25,13 @@ public abstract class Matriz<T extends Matriz<T>> {
 			gerarNovosNumeros();
 		}
 
-		public static synchronized void reset(int elementos) {
+		public static synchronized void reset(long elementos) {
 
 			// pra testes pequenos gera quantidade certa de elementos
 			// pra testes massivos (10000x10000 etc) gera de 1000 em 1000 pra não sobrecarregar
 			// o sistema tentando criar arrays de milhões de posições
 
-			tamanhoLote = elementos % 1000 == 0 ? 1000 : elementos;
+			tamanhoLote = (elementos % 1000 == 0) ? 1000 : (int)elementos;
 			gerarNovosNumeros();
 			indiceAtual = 0;
 		}
@@ -85,7 +85,7 @@ public abstract class Matriz<T extends Matriz<T>> {
 		return this.colunas;
 	}
 
-	public int getCapacidade() {
+	public long getCapacidade() {
 		return this.capacidade;
 	}
 

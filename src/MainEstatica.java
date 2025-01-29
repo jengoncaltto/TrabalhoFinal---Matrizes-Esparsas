@@ -3,18 +3,18 @@ import java.time.LocalDateTime;
 public class MainEstatica {
 	public static void main(String[] args) {
 
-//		MatrizEstatica m = new MatrizEstatica(40000, 200);
-//		m.preencherMatriz();
-//
-//		MatrizEstatica m2 = new MatrizEstatica(200, 40000);
-//		m2.preencherMatriz();
-//
-//		LocalDateTime inicio = LocalDateTime.now();
-//		System.out.println("Começando a multiplicar as " + Relogio.Timestamp());
-//		var bla = m.multiplicarMatriz(m2);
-//		System.out.println();
-//		System.out.println("terminou depois de " + Relogio.Passou(inicio));
-		//	bla.imprimirMatriz();
+		MatrizEstatica m = new MatrizEstatica(10000, 10000);
+		m.preencherMatriz();
+
+		MatrizEstatica m2 = new MatrizEstatica(10000, 10000);
+		m2.preencherMatriz();
+
+		LocalDateTime inicio = LocalDateTime.now();
+		System.out.println("Começando a multiplicar as " + Relogio.Timestamp());
+		var bla = m.multiplicarMatriz(m2);
+		System.out.println();
+		System.out.println("terminou depois de " + Relogio.tempoGasto(inicio));
+//			bla.imprimirMatriz();
 //
 //
 //		MatrizEstatica m10 = new MatrizEstatica(43, 68);
