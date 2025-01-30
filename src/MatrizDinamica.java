@@ -37,7 +37,7 @@ public class MatrizDinamica extends Matriz<MatrizDinamica> {
 					this.inserirElemento(linha, coluna, valor);
 			}
 		}
-		System.out.println();
+		System.out.println("Matriz preenchida!");
 	}
 
 	@Override

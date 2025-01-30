@@ -7,9 +7,9 @@ public class MainTestes {
 //		SomaEstatica();
 //		System.out.println("=========== FIM da SOMA ESTÁTICA ===========");
 //		System.out.println();
-//		System.out.println("=========== COMEÇA SOMA DINÂMICA ===========");
-//		SomaDinamica();
-//		System.out.println("=========== FIM da SOMA DINÂMICA ===========");
+		System.out.println("=========== COMEÇA SOMA DINÂMICA ===========");
+		SomaDinamica();
+		System.out.println("=========== FIM da SOMA DINÂMICA ===========");
 
 //		System.out.println("=========== COMEÇA TRANSPOSTA ESTÁTICA ===========");
 //		TransporEstatica();
@@ -23,9 +23,9 @@ public class MainTestes {
 //		ProdutoEstatica();
 //		System.out.println("=========== FIM da PRODUTO ESTÁTICA ===========");
 //		System.out.println();
-		System.out.println("=========== COMEÇA PRODUTO DINÂMICA ===========");
-		ProdutoDinamica();
-		System.out.println("=========== FIM da PRODUTO DINÂMICA ===========");
+//		System.out.println("=========== COMEÇA PRODUTO DINÂMICA ===========");
+//		ProdutoDinamica();
+//		System.out.println("=========== FIM da PRODUTO DINÂMICA ===========");
 
 
 	}
@@ -115,28 +115,28 @@ public class MainTestes {
 	}
 
 	private static void SomaDinamica() {
-		TesteSomaDinamica(10);
-		System.out.println("======================");
-		TesteSomaDinamica(20);
-		System.out.println("======================");
-		TesteSomaDinamica(30);
-		System.out.println("======================");
-		TesteSomaDinamica(40);
-		System.out.println("======================");
-		TesteSomaDinamica(50);
-		System.out.println("======================");
-		TesteSomaDinamica(100);
-		System.out.println("======================");
-		TesteSomaDinamica(200);
-		System.out.println("======================");
-		TesteSomaDinamica(500);
-		System.out.println("======================");
-		TesteSomaDinamica(1000);
-		System.out.println("======================");
-		TesteSomaDinamica(10000);
-		System.out.println("======================");
-		TesteSomaDinamica(20000);
-		System.out.println("======================");
+//		TesteSomaDinamica(10);
+//		System.out.println("======================");
+//		TesteSomaDinamica(20);
+//		System.out.println("======================");
+//		TesteSomaDinamica(30);
+//		System.out.println("======================");
+//		TesteSomaDinamica(40);
+//		System.out.println("======================");
+//		TesteSomaDinamica(50);
+//		System.out.println("======================");
+//		TesteSomaDinamica(100);
+//		System.out.println("======================");
+//		TesteSomaDinamica(200);
+//		System.out.println("======================");
+//		TesteSomaDinamica(500);
+//		System.out.println("======================");
+//		TesteSomaDinamica(1000);
+//		System.out.println("======================");
+//		TesteSomaDinamica(10000);
+//		System.out.println("======================");
+//		TesteSomaDinamica(20000);
+//		System.out.println("======================");
 		TesteSomaDinamica(50000);
 		System.out.println("======================");
 		TesteSomaDinamica(100000);
@@ -189,13 +189,13 @@ public class MainTestes {
 		System.out.println("======================");
 		TesteProdutoDinamica(1000);
 		System.out.println("======================");
-//		TesteProdutoDinamica(10000);
-//		System.out.println("======================");
-//		TesteProdutoDinamica(20000);
-//		System.out.println("======================");
-//		TesteProdutoDinamica(50000);
-//		System.out.println("======================");
-//		TesteProdutoDinamica(100000);
+		TesteProdutoDinamica(10000);
+		System.out.println("======================");
+		TesteProdutoDinamica(20000);
+		System.out.println("======================");
+		TesteProdutoDinamica(50000);
+		System.out.println("======================");
+		TesteProdutoDinamica(100000);
 	}
 
 
